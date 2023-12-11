@@ -25,9 +25,14 @@ jobs:
         pip install -r requirements.txt
 
     
-
-    - name: Run Flask application (example)
+    - name: Expose Flask application with ngrok
       run: |
-        # Adjust the command to run your Flask application
         export FLASK_APP=flask_app.py
-        python -m flask run
+        python -m flask run --host=127.0.0.1 --port=5000 &
+        ngrok http 5000 -log=stdout > ngrok.log &
+        sleep 5  # Allow ngrok to initialize
+
+
+    
+
+    
