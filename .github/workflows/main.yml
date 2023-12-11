@@ -35,7 +35,7 @@ jobs:
       run: |
         export FLASK_APP=flask_app.py
         python -m flask run --host=0.0.0.0 --port=5000 > flask.log 2>&1 &
-        sleep 5
+        sleep 20
 
     - name: Show Flask logs
       run: |
@@ -44,7 +44,7 @@ jobs:
     - name: Expose Flask application with ngrok
       run: |
         ngrok http 5000 -log=stdout > ngrok.log &
-        sleep 10
+        sleep 20
 
     - name: Show ngrok logs
       run: |
