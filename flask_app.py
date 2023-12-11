@@ -4,7 +4,7 @@ import pandas as pd
 import pickle
 import joblib
 
-reference=pd.read_csv(r"C:\Users\91818\Desktop\Machine Failure\prima_13.csv")
+reference=pd.read_csv(r"prima_13.csv")
 model = pickle.load(open('Naive_bayes.pkl', 'rb'))
 imp_scale = joblib.load('imp_scale')
 winsor = joblib.load('winsor')
