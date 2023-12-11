@@ -37,19 +37,24 @@ jobs:
         python -m flask run --host=127.0.0.1 --port=5000 > flask.log 2>&1 &
         sleep 5
 
+    - name: Show Flask logs
+      run: |
+        cat flask.log
+
     - name: Expose Flask application with ngrok
       run: |
         ngrok http 5000 -log=stdout > ngrok.log &
-        sleep 5
+        sleep 10
+
+    - name: Show ngrok logs
+      run: |
+        cat ngrok.log
 
     - name: Show ngrok URL
       run: |
-        cat ngrok.log | grep "Forwarding"
+        grep "Forwarding" ngrok.log || echo "No forwarding URL found."
 
     - name: Finalize
       run: |
         # Add any finalization steps or additional checks here
 
-    - name: Check Flask Logs
-      run: |
-        cat flask.log
