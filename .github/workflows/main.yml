@@ -34,7 +34,7 @@ jobs:
     - name: Run Flask application (example)
       run: |
         export FLASK_APP=flask_app.py
-        python -m flask run --host=127.0.0.1 --port=5000 > flask.log 2>&1 &
+        python -m flask run --host=0.0.0.0 --port=5000 > flask.log 2>&1 &
         sleep 5
 
     - name: Show Flask logs
