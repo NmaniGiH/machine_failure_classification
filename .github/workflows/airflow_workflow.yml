@@ -21,7 +21,7 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install apache-airflow 
+        pip install Flask==1.1.4 Flask-SQLAlchemy==2.4.4 apache-airflow
         pip install -r requirements.txt
 
     - name: Set Airflow Variables
