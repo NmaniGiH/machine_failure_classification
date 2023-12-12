@@ -27,7 +27,7 @@ jobs:
     - name: Set Airflow Variables
       run: |
         export AIRFLOW_HOME=$(pwd)/airflow
-        airflow initdb
+        airflow db init
         airflow variables -s GITHUB_REPO_URL ${{ secrets.AIRFLOW_CONN_GITHUB_REPO }}
         airflow variables -s GITHUB_TOKEN ${{ secrets.AIRFLOW_CONN_GITHUB_TOKEN }}
 
