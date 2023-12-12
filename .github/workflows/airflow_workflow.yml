@@ -21,13 +21,30 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt  # Include any additional requirements
+        pip install apache-airflow 
+        pip install requirements.txt
+
+    - name: Set Airflow Variables
+      run: |
+        export AIRFLOW_HOME=$(pwd)/airflow
+        airflow initdb
+        airflow variables -s GITHUB_REPO_URL ${{ secrets.AIRFLOW_CONN_GITHUB_REPO }}
+        airflow variables -s GITHUB_TOKEN ${{ secrets.AIRFLOW_CONN_GITHUB_TOKEN }}
+
+    - name: Run Airflow Scheduler
+      run: |
+        airflow scheduler -D
+
+    - name: Run Airflow Webserver
+      run: |
+        airflow webserver -D
 
     - name: Run Airflow DAG
-      env:
-        AIRFLOW_CONN_GITHUB_REPO: ${{ secrets.AIRFLOW_CONN_GITHUB_REPO }}
-        AIRFLOW_CONN_GITHUB_TOKEN: ${{ secrets.AIRFLOW_CONN_GITHUB_TOKEN }}
       run: |
-        # Run your Airflow DAG here using the configured secrets
-        # Example: airflow dags trigger -e ENVIRONMENT_NAME DAG_NAME
-        # Make sure to set the correct environment name and DAG name
+        airflow dags trigger -e development conditional_model_drift_detection_dag
+
+    - name: Stop Airflow Scheduler and Webserver
+      run: |
+        pkill -f "airflow scheduler"
+        pkill -f "airflow webserver"
+
