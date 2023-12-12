@@ -6,13 +6,14 @@ charset-normalizer==3.3.2
 click==8.1.7
 colorama==0.4.6
 distro==1.8.0
-evidently==0.4.10
+evidently==0.4.7
 exceptiongroup==1.2.0
 fastapi==0.104.1
 fastapi-restful==0.5.0
 feature-engine==1.6.2
 filelock==3.13.1
 Flask==3.0.0
+fsspec==2023.12.2
 h11==0.14.0
 idna==3.6
 importlib-metadata==7.0.0
@@ -31,7 +32,7 @@ pandas==2.0.3
 patsy==0.5.4
 plotly==5.18.0
 psutil==5.9.6
-pyarrow==10.0.1
+pyarrow==14.0.1
 pydantic==1.10.13
 Pygments==2.17.2
 python-dateutil==2.8.2
@@ -43,6 +44,7 @@ rich==13.7.0
 scikit-learn==1.3.2
 scipy==1.10.1
 six==1.16.0
+sklearn==0.0.post1
 sniffio==1.3.0
 starlette==0.27.0
 statsmodels==0.14.0
