@@ -27,7 +27,6 @@ jobs:
 
     - name: Deploy DAGs
       run: |
-        export AIRFLOW_HOME=$(pwd)/airflow
         airflow db init
         mv model_monitoring_dag.py $AIRFLOW_HOME/dags
         airflow webserver -p 8080 -D &
