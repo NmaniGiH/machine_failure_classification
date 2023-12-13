@@ -26,6 +26,8 @@ jobs:
       - name: Initialize Airflow Database
         run: |
           airflow db init
+          airflow webserver
+          airflow scheduler
 
 
       - name: Run Airflow DAG
