@@ -33,7 +33,7 @@ jobs:
     - name: Set up Airflow
       run: |
         export AIRFLOW_HOME=$(pwd)
-        cp $GITHUB_WORKSPACE/dags/airflow.cfg $AIRFLOW_HOME/airflow.cfg
+        cp $GITHUB_WORKSPACE/airflow.cfg $AIRFLOW_HOME/airflow.cfg
 
     - name: Airflow db
       run: |
@@ -59,6 +59,7 @@ jobs:
     - name: Tear down Airflow
       run: |
         pkill -f "airflow scheduler"
+
 
 
 
