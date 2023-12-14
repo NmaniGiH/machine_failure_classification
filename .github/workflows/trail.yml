@@ -1,4 +1,4 @@
-name: Run Airflow DAG
+name: Run Airflow DAG 
 
 on:
   push:
