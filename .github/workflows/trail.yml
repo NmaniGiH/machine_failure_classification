@@ -58,8 +58,9 @@ jobs:
 
     - name: Check Airflow logs
       run: |
-        cd $AIRFLOW_HOME
-        cat logs/scheduler/latest/*.log
+        cd $AIRFLOW_HOME/logs/scheduler/latest/
+        ls -lh
+        cat *.log
 
     - name: Run Airflow DAG
       run: |
