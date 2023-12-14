@@ -22,7 +22,9 @@ jobs:
       run: mkdir -p $GITHUB_WORKSPACE/dags/
 
     - name: Copy all files to DAGs folder
-      run: cp -r * $GITHUB_WORKSPACE/dags/
+      run: |
+        shopt -s extglob  # Enable extended pattern matching
+        cp -r !($GITHUB_WORKSPACE/dags) $GITHUB_WORKSPACE/dags/
 
     - name: Install dependencies
       run: |
@@ -53,11 +55,11 @@ jobs:
     - name: Run Airflow DAG
       run: |
         cd $AIRFLOW_HOME
-        airflow dag list
         airflow dags trigger -r now conditional_model_drift_detection_dag
 
     - name: Tear down Airflow
       run: |
         pkill -f "airflow scheduler"
+
 
 
