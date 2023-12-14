@@ -24,9 +24,6 @@ jobs:
     - name: Copy DAG file
       run: cp model_drift_dag.py $GITHUB_WORKSPACE/dags/
 
-    - name: Copy airflow.cfg
-      run: cp airflow.cfg $GITHUB_WORKSPACE/airflow.cfg
-
     - name: Install dependencies
       run: |
         pip install apache-airflow
@@ -35,12 +32,14 @@ jobs:
     - name: Set up Airflow
       run: |
         export AIRFLOW_HOME=$(pwd)
-        cp $GITHUB_WORKSPACE/airflow.cfg $AIRFLOW_HOME/airflow.cfg
 
     - name: Airflow db
       run: |
         cd $AIRFLOW_HOME
         airflow db init
+        echo "[core]" >> airflow.cfg
+        echo "dags_folder = $AIRFLOW_HOME/dags" >> airflow.cfg
+        echo "load_examples = False" >> airflow.cfg
 
     - name: Run Airflow scheduler
       run: |
