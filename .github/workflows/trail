@@ -1,0 +1,61 @@
+name: Run Airflow DAG
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run_airflow_dag:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Create DAGs directory
+      run: mkdir -p $GITHUB_WORKSPACE/dags/
+
+    - name: Copy DAG file
+      run: cp model_drift_dag.py $GITHUB_WORKSPACE/dags/
+
+    - name: Copy airflow.cfg
+      run: cp airflow.cfg $GITHUB_WORKSPACE/airflow.cfg
+
+    - name: Install dependencies
+      run: |
+        pip install apache-airflow
+        pip install pandas scikit-learn evidently feature_engine
+
+    - name: Set up Airflow
+      run: |
+        export AIRFLOW_HOME=$(pwd)
+        cp $GITHUB_WORKSPACE/airflow.cfg $AIRFLOW_HOME/airflow.cfg
+
+    - name: Airflow db
+      run: |
+        cd $AIRFLOW_HOME
+        airflow db init
+
+    - name: Run Airflow scheduler
+      run: |
+        cd $AIRFLOW_HOME
+        airflow scheduler --daemon
+
+    - name: Wait for scheduler to start
+      run: sleep 10
+
+    - name: Run Airflow DAG
+      run: |
+        cd $AIRFLOW_HOME
+        airflow dags trigger -r now model_drift_dag 
+
+    - name: Tear down Airflow
+      run: |
+        pkill -f "airflow scheduler"
+
