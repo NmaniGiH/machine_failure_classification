@@ -21,9 +21,9 @@ jobs:
     - name: Create DAGs directory
       run: mkdir -p $GITHUB_WORKSPACE/dags/
 
-    - name: Copy all files to DAGs folder
+    - name: Copy specific files to DAGs folder
       run: |
-        rsync -av --exclude='dags/' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/dags/
+        cp Naive_bayes.pkl imp_scale prima_13.csv test_file.csv winsor $GITHUB_WORKSPACE/dags/
 
     - name: Install dependencies
       run: |
