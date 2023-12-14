@@ -54,7 +54,7 @@ jobs:
     - name: Run Airflow DAG
       run: |
         cd $AIRFLOW_HOME
-        airflow test conditional_model_drift_detection_dag detect_model_drift_task 2023-01-01
+        airflow tasks test conditional_model_drift_detection_dag detect_model_drift_task 2023-01-01
 
 
     - name: Tear down Airflow
