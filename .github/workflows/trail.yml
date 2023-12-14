@@ -25,11 +25,6 @@ jobs:
       run: |
         cp Naive_bayes.pkl imp_scale prima_13.csv test_file.csv winsor model_drift_dag.py  $GITHUB_WORKSPACE/dags/
       
-    - name: Check DAG files
-      run: |
-        cd $GITHUB_WORKSPACE
-        ls -lh dags/
-
     - name: Install dependencies
       run: |
         pip install apache-airflow
@@ -38,7 +33,10 @@ jobs:
     - name: Set up Airflow
       run: |
         export AIRFLOW_HOME=$(pwd)
-        
+        ls -lh
+        ls -lh logs
+        ls -lh logs/scheduler
+        ls -lh logs/scheduler/latest
 
     - name: Airflow db
       run: |
@@ -56,18 +54,10 @@ jobs:
     - name: Wait for scheduler to start
       run: sleep 10
 
-    - name: Check Airflow logs
-      run: |
-        cd $AIRFLOW_HOME/logs/scheduler/latest/
-        ls -lh
-        cat *.log
-
     - name: Run Airflow DAG
       run: |
         cd $AIRFLOW_HOME
-        ls -lh
-        airflow dag list
-        airflow dags trigger -r now conditional_model_drift_detection_dag
+        airflow dags trigger -r now model_drift_dag
 
     - name: Tear down Airflow
       run: |
