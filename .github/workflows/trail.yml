@@ -23,8 +23,8 @@ jobs:
 
     - name: Copy specific files to DAGs folder
       run: |
-        cp Naive_bayes.pkl imp_scale prima_13.csv test_file.csv winsor $GITHUB_WORKSPACE/dags/
-
+        cp Naive_bayes.pkl imp_scale prima_13.csv test_file.csv winsor model_drift_dag.py  $GITHUB_WORKSPACE/dags/
+      
     - name: Install dependencies
       run: |
         pip install apache-airflow
@@ -55,7 +55,7 @@ jobs:
       run: |
         cd $AIRFLOW_HOME
         ls -lh
-        airflow dag list
+        airflow list_dags
         airflow dags trigger -r now conditional_model_drift_detection_dag
 
     - name: Tear down Airflow
