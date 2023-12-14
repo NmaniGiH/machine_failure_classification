@@ -23,8 +23,7 @@ jobs:
 
     - name: Copy all files to DAGs folder
       run: |
-        shopt -s extglob  # Enable extended pattern matching
-        cp -r !($GITHUB_WORKSPACE/dags) $GITHUB_WORKSPACE/dags/
+        rsync -av --exclude='dags/' $GITHUB_WORKSPACE/ $GITHUB_WORKSPACE/dags/
 
     - name: Install dependencies
       run: |
@@ -60,6 +59,7 @@ jobs:
     - name: Tear down Airflow
       run: |
         pkill -f "airflow scheduler"
+
 
 
 
