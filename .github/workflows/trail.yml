@@ -21,8 +21,8 @@ jobs:
     - name: Create DAGs directory
       run: mkdir -p $GITHUB_WORKSPACE/dags/
 
-    - name: Copy DAG file
-      run: cp model_drift_dag.py $GITHUB_WORKSPACE/dags/
+    - name: Copy all files to DAGs folder
+      run: cp -r * $GITHUB_WORKSPACE/dags/
 
     - name: Install dependencies
       run: |
@@ -32,6 +32,7 @@ jobs:
     - name: Set up Airflow
       run: |
         export AIRFLOW_HOME=$(pwd)
+        cp $GITHUB_WORKSPACE/airflow.cfg $AIRFLOW_HOME/airflow.cfg
 
     - name: Airflow db
       run: |
@@ -52,10 +53,11 @@ jobs:
     - name: Run Airflow DAG
       run: |
         cd $AIRFLOW_HOME
-        airflow dags list
-        airflow dags trigger -r now conditional_model_drift_detection_dag 
+        airflow dag list
+        airflow dags trigger -r now conditional_model_drift_detection_dag
 
     - name: Tear down Airflow
       run: |
         pkill -f "airflow scheduler"
+
 
