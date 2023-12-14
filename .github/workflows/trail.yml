@@ -41,6 +41,7 @@ jobs:
     - name: Run Airflow scheduler
       run: |
         cd $AIRFLOW_HOME
+        airflow db init
         airflow scheduler --daemon
 
     - name: Wait for scheduler to start
