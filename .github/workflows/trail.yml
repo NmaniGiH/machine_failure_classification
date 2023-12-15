@@ -9,6 +9,9 @@ jobs:
   run_airflow_dag_tests:
     runs-on: ubuntu-latest
 
+    env:
+      AIRFLOW_HOME: ${{ github.workspace }}
+
     steps:
     - name: Checkout main repository
       uses: actions/checkout@v2
@@ -23,17 +26,12 @@ jobs:
         pip install apache-airflow
         pip install pandas scikit-learn evidently feature_engine
 
-    - name: Set up Airflow
+    - name: Set up Airflow and initialize database
       run: |
-        export AIRFLOW_HOME=$(pwd)
         airflow db init
-        echo "[core]" >> airflow.cfg
-        echo "dags_folder = $AIRFLOW_HOME/dags" >> airflow.cfg
-        echo "load_examples = False" >> airflow.cfg
 
     - name: Run Airflow scheduler
       run: |
-        cd $AIRFLOW_HOME
         airflow scheduler --daemon
 
     - name: Wait for scheduler to start
@@ -41,10 +39,8 @@ jobs:
 
     - name: Run Airflow DAG Tests
       run: |
-        cd $AIRFLOW_HOME
-        python -m unittest tests.test_model_drift_dag
+        airflow dags trigger -r now model_drift_dag
 
     - name: Tear down Airflow
       run: |
-        cd $AIRFLOW_HOME
         airflow scheduler --stop
