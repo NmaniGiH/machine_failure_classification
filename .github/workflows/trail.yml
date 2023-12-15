@@ -1,4 +1,4 @@
-name: Run Airflow DAG 
+name: Run Airflow DAG
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
     - name: Copy specific files to DAGs folder
       run: |
         cp Naive_bayes.pkl imp_scale prima_13.csv test_file.csv winsor model_drift_dag.py  $GITHUB_WORKSPACE/dags/
-      
+
     - name: Install dependencies
       run: |
         pip install apache-airflow
@@ -34,9 +34,11 @@ jobs:
       run: |
         export AIRFLOW_HOME=$(pwd)
         ls -lh
-        ls -lh logs
-        ls -lh logs/scheduler
-        ls -lh logs/scheduler/latest
+        if [ -d logs ]; then
+          ls -lh logs
+          ls -lh logs/scheduler
+          ls -lh logs/scheduler/latest
+        fi
 
     - name: Airflow db
       run: |
@@ -52,7 +54,7 @@ jobs:
         airflow scheduler --daemon
 
     - name: Wait for scheduler to start
-      run: sleep 10
+      run: sleep 30
 
     - name: Run Airflow DAG
       run: |
@@ -61,4 +63,5 @@ jobs:
 
     - name: Tear down Airflow
       run: |
-        pkill -f "airflow scheduler"
+        cd $AIRFLOW_HOME
+        airflow scheduler --stop
