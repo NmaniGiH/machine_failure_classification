@@ -33,12 +33,10 @@ jobs:
     - name: Set up Airflow
       run: |
         export AIRFLOW_HOME=$(pwd)
-        ls -lh
-        if [ -d logs ]; then
-          ls -lh logs
-          ls -lh logs/scheduler
-          ls -lh logs/scheduler/latest
-        fi
+
+    - name: Forward Airflow UI port
+      run: ssh -N -L 9000:localhost:8080 LAPTOP-49SOU719@192.168.1.4
+      background: true
 
     - name: Airflow db
       run: |
