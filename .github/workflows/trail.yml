@@ -36,7 +36,7 @@ jobs:
 
     - name: Forward Airflow UI port
       run: |
-        ssh -N -L 9000:localhost:8080 your-username@your-machine-ip &
+        ssh -N -L 9000:localhost:8080 LAPTOP-49SOU719@192.168.1.4 &
         PID=$!
         wait $PID
 
